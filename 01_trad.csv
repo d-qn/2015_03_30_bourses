@@ -1,0 +1,34 @@
+code,fr
+CH,Suisse
+ZH,Zurich
+BE,Berne
+LU,Lucerne
+UR,Uri
+SZ,Schwyz
+OW,Obwald
+NW,Nidwald
+GL,Glaris
+ZG,Zoug
+FR,Fribourg
+SO,Soleure
+BS,Bâle-Ville
+BL,Bâle-Campagne
+SH,Schaffhouse
+AR,Appenzell Rh.-E.
+AI,Appenzell Rh.-I.
+SG,Saint-Gall
+GR,Grisons
+AG,Argovie
+TG,Thurgovie
+TI,Tessin
+VD,Vaud
+VS,Valais
+NE,Neuchâtel
+GE,Genève
+JU,Jura
+title,Bourses pour le degré tertiaire par canton
+descr,INTERACTIF: Montant moyen et proportion de bénéficiaires par canton. La taille des bulles est proportionnelle au total du nombre d'étudiants (domicile) par canton. Excepté pour la Suisse en rouge. 
+ylab,Montant moyen par bénéficiaire (CHF / année)
+xlab,% de bénéficiaires du total des étudiants
+ztool,Total du nombre d'étudiants
+source,source: Office fédéral de la statistique – Office des bourses et prêts cantonaux

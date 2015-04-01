@@ -1,0 +1,723 @@
+require( rCharts )#
+options(RCHART_TEMPLATE = 'Rickshaw.html')#
+#specify the data#
+data = data.frame(#
+c( 0, 1, 2, 3 ),#
+c( 40, 49, 17, 42 ),#
+stringsAsFactors = FALSE#
+)#
+colnames(data) <- c("x","y")#
+#build the plot#
+r1 <- Rickshaw$new()#
+r1$layer(#
+y ~ x,#
+data = data,#
+type = "area",#
+colors= "steelblue",#
+height = 240,#
+width = 540#
+)#
+#turn off all the nice built in features#
+#to match the sparse first example#
+r1$set(#
+hoverDetail = FALSE,#
+xAxis = FALSE,#
+yAxis = FALSE,#
+shelving = FALSE,#
+legend = FALSE,#
+slider = FALSE,#
+highlight = FALSE#
+)
+data <- read.csv("data/data2.csv", stringsAsFactors = FALSE)#
+#build the plot#
+r2 <- Rickshaw$new()#
+r2$layer(#
+y ~ x,#
+data = data,#
+type = "area",#
+colors= "steelblue",#
+height = 240,#
+width = 540#
+)#
+#turn off all the nice built in features#
+#to match the sparse second example#
+r2$set(#
+hoverDetail = FALSE,#
+xAxis = FALSE,#
+yAxis = FALSE,#
+shelving = FALSE,#
+legend = FALSE,#
+slider = FALSE,#
+highlight = FALSE#
+)
+p1 <- nPlot(mpg ~ wt, group = 'cyl', data = mtcars, type = 'scatterChart')#
+p1$xAxis(axisLabel = 'Weight')#
+p1
+## {title: MultiBar Chart}#
+hair_eye = as.data.frame(HairEyeColor)#
+p2 <- nPlot(Freq ~ Hair, group = 'Eye', data = subset(hair_eye, Sex == "Female"), type = 'multiBarChart')#
+p2$chart(color = c('brown', 'blue', '#594c26', 'green'))#
+p2#
+## {title: MultiBar Horizontal Chart}#
+p3 <- nPlot(~ cyl, group = 'gear', data = mtcars, type = 'multiBarHorizontalChart')#
+p3$chart(showControls = F)#
+p3#
+## {title: Pie Chart}#
+p4 <- nPlot(~ cyl, data = mtcars, type = 'pieChart')#
+p4#
+## {title: Donut Chart}#
+p5 <- nPlot(~ cyl, data = mtcars, type = 'pieChart')#
+p5$chart(donut = TRUE)#
+p5#
+## {title: Line Chart}#
+data(economics, package = 'ggplot2')#
+p6 <- nPlot(uempmed ~ date, data = economics, type = 'lineChart')#
+p6#
+## {title: Line with Focus Chart }#
+ecm <- reshape2::melt(economics[,c('date', 'uempmed', 'psavert')], id = 'date')#
+p7 <- nPlot(value ~ date, group = 'variable', data = ecm, type = 'lineWithFocusChart')#
+#test format dates on the xAxis#
+#also good test of javascript functions as parameters#
+#dates from R to JSON will come over as number of days since 1970-01-01#
+#so convert to milliseconds 86400000 in a day and then format with d3#
+#on lineWithFocusChart type xAxis will also set x2Axis unless it is specified#
+p7$xAxis( tickFormat="#!function(d) {return d3.time.format('%b %Y')(new Date( d * 86400000 ));}!#" )#
+#test xAxis also sets x2Axis#
+p7#
+#now test setting x2Axis to something different#
+#test format dates on the x2Axis#
+#test to show %Y format which is different than xAxis#
+p7$x2Axis( tickFormat="#!function(d) {return d3.time.format('%Y')(new Date( d * 86400000 ));}!#" )#
+p7#
+#test set xAxis again to make sure it does not override set x2Axis#
+p7$xAxis( NULL, replace = T)#
+p7
+require( rCharts )
+?options
+require( rCharts )#
+options(RCHART_TEMPLATE = 'Rickshaw.html')#
+#specify the data#
+data = data.frame(#
+  c( 0, 1, 2, 3 ),#
+  c( 40, 49, 17, 42 ),#
+  stringsAsFactors = FALSE#
+)#
+colnames(data) <- c("x","y")#
+#build the plot#
+r1 <- Rickshaw$new()#
+r1$layer(#
+  y ~ x,#
+  data = data,#
+  type = "area",#
+  colors= "steelblue",#
+  height = 240,#
+  width = 540#
+)#
+#turn off all the nice built in features#
+#to match the sparse first example#
+r1$set(#
+  hoverDetail = FALSE,#
+  xAxis = FALSE,#
+  yAxis = FALSE,#
+  shelving = FALSE,#
+  legend = FALSE,#
+  slider = FALSE,#
+  highlight = FALSE#
+)#
+#r1
+r1
+# Example 2#
+require(rCharts)#
+# options(RCHART_TEMPLATE = 'Rickshaw.html')#
+require(RColorBrewer)#
+data(economics, package = 'ggplot2')#
+datm = reshape2::melt(#
+  economics[,c('date', 'psavert', 'uempmed')],#
+  id = 'date'#
+)#
+datm <- transform(datm, date = to_jsdate(date))#
+p2 <- Rickshaw$new()#
+p2$layer(value ~ date, group = 'variable', data = datm, type = 'line', #
+  colors = c("darkred", "darkslategrey"))
+p2
+to_jsdate <- function(date_){#
+  val = as.POSIXct(as.Date(date_),origin="1970-01-01")#
+  as.numeric(val)#
+}#
+p3 <- Rickshaw$new()#
+p3$layer(Employed ~ Year, data = longley, type = 'line', colors = c('darkred'))#
+#
+usp = reshape2::melt(USPersonalExpenditure)#
+p4 <- Rickshaw$new()#
+p4$layer(value ~ Var2, group = 'Var1', data = usp, type = 'area')#
+p4$show(T)#
+#
+dat <- yaml::yaml.load('[ { x: 0, y: 40 }, { x: 1, y: 49 }, { x: 2, y: 17 }, { x: 3, y: 42 } ]')#
+#
+dat <- data.frame(#
+  x = c(0, 1, 2, 3),#
+  y = c(40, 49, 2, 17)#
+)
+# Example 1#
+p1 <- Rickshaw$new()#
+p1$layer(~ cyl, group = 'am', data = mtcars, type = 'bar')#
+#
+# Example 2#
+require(rCharts)#
+# options(RCHART_TEMPLATE = 'Rickshaw.html')#
+require(RColorBrewer)#
+data(economics, package = 'ggplot2')#
+datm = reshape2::melt(#
+  economics[,c('date', 'psavert', 'uempmed')],#
+  id = 'date'#
+)#
+datm <- transform(datm, date = to_jsdate(date))#
+p2 <- Rickshaw$new()#
+p2$layer(value ~ date, group = 'variable', data = datm, type = 'line', #
+  colors = c("darkred", "darkslategrey"))
+p2
+to_jsdate <- function(date_){#
+  val = as.POSIXct(as.Date(date_),origin="1970-01-01")#
+  as.numeric(val)#
+}#
+p3 <- Rickshaw$new()#
+p3$layer(Employed ~ Year, data = longley, type = 'line', colors = c('darkred'))#
+#
+usp = reshape2::melt(USPersonalExpenditure)#
+p4 <- Rickshaw$new()#
+p4$layer(value ~ Var2, group = 'Var1', data = usp, type = 'area')#
+p4$show(T)
+library(pXr)
+library(pXR)
+library(pxR)
+library(pxr)
+library(pXR)
+library(pXr)
+library(pxR)
+library(ggplot2)
+install.packages(pxR)
+install.packages("pxR")
+library(pxR)
+px<- read.px("~/Downloads/ilc_di01.px")
+px
+px<- read.px("~/Downloads/ilc_di01.px")
+?read.px
+px<- read.px("~/Downloads/ilc_di01.px")
+source('https://raw.githubusercontent.com/walkerke/teaching-with-datavis/master/pyramids/rcharts_pyramids.R')
+## Script to generate population pyramids from the Census Bureau's International Database with rCharts ###
+#
+library(XML)#
+library(reshape2)#
+library(rCharts)#
+library(plyr)#
+getAgeTable <- function(country, year) {#
+  c1 <- "http://www.census.gov/population/international/data/idb/region.php?N=%20Results%20&T=10&A=separate&RT=0&Y="  #
+  c2 <- "&R=-1&C="#
+  yrs <- gsub(" ", "", toString(year))#
+  url <- paste0(c1, yrs, c2, country)#
+  df <- data.frame(readHTMLTable(url))#
+  nms <- c("Year", "Age", "total", "Male", "Female", "percent", "pctMale", "pctFemale", "sexratio")  #
+  names(df) <- nms  #
+  cols <- c(1, 3:9)#
+  df[,cols] <- apply(df[,cols], 2, function(x) as.numeric(as.character(gsub(",", "", x))))#
+  df <- df[df$Age != 'Total', ]  #
+  ord <- 1:nrow(df)#
+  df <- cbind(df, ord)#
+  return(df)#
+}
+dPyramid <- function(country, year, colors=NULL) {#
+  dat <- getAgeTable(country, year)#
+  dat$Male <- -1 * dat$Male#
+  keep <- c("Year", "Age", "Male", "Female", "ord")#
+  dat.sub <- dat[,keep]#
+  dat.melt <- melt(dat.sub, #
+                   value.name='Population', #
+                   variable.name = 'Gender', #
+                   id.vars=c('Age', 'ord', 'Year') )#
+  dat.melt$gencode <- ifelse(dat.melt$Gender == 'Male', 1, 2)#
+  d1 <- dPlot(#
+    x = "Population", #
+    y = "Age", #
+    groups = "Gender", #
+    data = dat.melt, #
+    type = 'bar')#
+  d1$yAxis(type = "addCategoryAxis", orderRule = "ord")#
+  d1$xAxis(type = "addMeasureAxis")#
+  d1$legend( x = 60, y = 10, width = 700, height = 20, horizontalAlign = "right")#
+  if (!is.null(colors)){#
+    d1$colorAxis(#
+      type = "addColorAxis", #
+      colorSeries = "gencode", #
+      palette = colors#
+    )#
+  }#
+  if (length(year) > 1) {#
+    d1$set(storyboard = "Year")#
+    max_x <- round_any(max(dat.melt$Population), 10000, f = ceiling)#
+    min_x <- round_any(min(dat.melt$Population), 10000, f = floor)#
+    d1$xAxis(overrideMax = max_x, overrideMin = min_x)#
+  }#
+  if (max(dat.melt$Population >= 1000000)) {#
+    d1$setTemplate( afterScript = #
+                      "#
+                  <script>#
+                    x._getFormat = function () {#
+                    return function(d) {#
+                    return d3.format(',.1f')(Math.abs(d) / 1000000) + 'm';#
+                     };#
+                    };#
+                  myChart.draw()#
+                  </script>#
+                  ")#
+  } else {#
+    d1$setTemplate( afterScript = #
+                      "#
+                  <script>#
+                    x._getFormat = function () {#
+                    return function(d) {#
+                    return d3.format(',.0f')(Math.abs(d) / 1000) + 'k';#
+                     };#
+                    };#
+                  myChart.draw()#
+                  </script>#
+                  ")#
+  }#
+#
+  d1#
+}
+d1
+dPyramid
+dPyramid('GM', seq(2000, 2050, 10), colors = c('black', 'red'))
+# Initialize libraries required#
+library(rCharts)#
+library(reshape2)#
+meansconferences=read.csv("https://raw.github.com/patilv/ESPNBball/master/meansconferences.csv")#
+# Mean statistics for all WCC and Big 12 teams for seasons 2001-2002 through 2012-2013  #
+# mean Points.Per.Game, mean Games.Played, mean Minutes,mean Rebounds.Per.Game, mean Assists.Per.Game, mean Steals.Per.Game,mean Blocks.Per.Game,#
+# mean Turnovers.Per.Game, mean Field.Goal.Percent, mean Free.Throw.Percent, mean Three.Point.FieldGoal.Percent#
+# For more info on how this dataset was generated, #
+# please see blog post at http://analyticsandvisualization.blogspot.com/2013/08/short-tales-of-two-ncaa-basketball.html#
+meltmeansconferences=melt(meansconferences[-c(1,10:14)], id.vars=c("Conference","Year")) # Remove the first irrelevant index column and few additional ones to keep this clean#
+# Horizontal Stacked bars chart 100% Storyboard#
+d1=dPlot(y="Year", x="value",data=meltmeansconferences, groups="variable",type="bar") # looking at the entire data instead of subset#
+d1$yAxis(type="addCategoryAxis", orderRule="Year")#
+d1$xAxis(type="addPctAxis") # instead of addMeasureAxis used in the Horizontal Stacked Bar#
+d1$set(storyboard = "Conference") # chart changes by conference#
+d1$legend(#
+  x = 0,#
+  y = 0,#
+  width = 500,#
+  height = 75,#
+  horizontalAlign = "right"#
+)
+# Initialize libraries required#
+library(rCharts)#
+library(reshape2)#
+meansconferences=read.csv("https://raw.github.com/patilv/ESPNBball/master/meansconferences.csv")
+library(rCharts)#
+library(reshape2)#
+meansconferences=read.csv("https://raw.github.com/patilv/ESPNBball/master/meansconferences.csv")
+require(XML)
+xmlParse("~/swissinfo/2014_07_03_evolutionDeLaPopulationSuisse/Etranger/ink/area_swissVsForeigners copy.svg")
+xml<- xmlParse("~/swissinfo/2014_07_03_evolutionDeLaPopulationSuisse/Etranger/ink/area_swissVsForeigners copy.svg")
+str(xml)
+xml
+?saveXML
+xmlAttrs(xml)
+xml
+xmlSize(r)
+xmlSize(xml)
+xmlName(xml)
+xml[[1]]
+str(xml)
+xm<- xmlParse("~/swissinfo/2014_07_03_evolutionDeLaPopulationSuisse/Etranger/ink/area_swissVsForeigners copy.svg")
+str(xm)
+xm
+xmlRoot(xml)
+xmlRoot(xm)
+test<- xmlRoot(xm)
+str(test)
+xmlAttrs(test)
+xmlName(test)
+test
+xmltop<- xmlRoot(xm)
+xmlName(xmltop)
+xmlSize(xmltop)
+xmlName(xmltop[[1]])
+xmlName(xmltop[[2]])
+xmlName(xmltop[[3]])
+xmlName(xmltop[[4]])
+xmlName(xmltop[[5]])
+xmlInternalTreeParse(xm)
+xmlInternalTreeParse("~/swissinfo/2014_07_03_evolutionDeLaPopulationSuisse/Etranger/ink/area_swissVsForeigners copy.svg")
+xm<- xmlInternalTreeParse("~/swissinfo/2014_07_03_evolutionDeLaPopulationSuisse/Etranger/ink/area_swissVsForeigners copy.svg")
+str(xm)
+?xpathApply
+install.packages("showtext")
+ls()
+sadf
+sadfsadf
+install.packages("eurostat")
+install_github("eurostat", "ropengov")#
+library(eurostat)
+library(devtools)
+install_github("eurostat", "ropengov")#
+library(eurostat)
+toc <- getEurostatTOC();
+getEurostatTOC()
+grepEurostatTOC("childcare")
+remove.packages("eurostat")
+remove.packages("ropengov")
+library(smarterPoland)
+library(SmarterPoland)
+library("SmarterPoland")
+install.packages("SmarterPoland")
+library("SmarterPoland")
+toc <- getEurostatTOC()
+install.packages("eurostat")
+library("eurostat")
+install.packages("datamart")
+library(datamart)
+eurostat()
+eurostat_data)()
+eurostat_data()
+install_github("pbiecek/SmarterPoland")
+library(github)
+library(devtools)
+install_github("pbiecek/SmarterPoland")
+library("SmarterPoland")
+getEurostatTOC()
+toc <- getEurostatTOC()
+toc
+toc <- getEurostatTOC()
+test <- getEurostatTOC()
+test
+source("~/swissinfo/_helpers/helpers.R")
+library(rCharts)#
+#
+a <- rCharts::Highcharts$new()#
+#
+test <- data.frame(x = 1:10, y= 1:10, z=rep(c(5,8),5), name = c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j"),#
+	series = c(rep(c("blob", "poop", "doop"), 3), "asdf"))#
+#
+seriesL <- by(test, test$series, function(df) {#
+	list(#
+		data = lapply(1:nrow(df), function(i) {#
+			list(x = df[i,'x'], y = df[i,'y'], z = df[i,'z'], name = as.character(df[i,'name']))#
+		}),#
+		name = as.character(df$series[1])#
+		)#
+}, simplify = F)#
+## very important: needs to get of the attributes, otherwise highchart will not plot it!#
+attributes(seriesL) <- NULL#
+#
+a$series(seriesL)#
+a$chart(zoomType = "xy", type = "bubble")#
+a$plotOptions(bubble = list(dataLabels = list(enabled = T, style = list(textShadow = 'none') ,#
+	color = '#A9A9A9', formatter = "#! function() { return this.point.name; } !#")))#
+a$tooltip(formatter = "#! function() { return this.point.name + ':' +this.x + ', ' + this.y; } !#")#
+a
+library(swiRcharts)
+?hSeries
+library(swiTheme)#
+a <- rCharts::Highcharts$new()#
+x <- 1:10#
+y <- seq(1, 100, 10)#
+z <- 10:1#
+color <- rep(c("grey", "red"), 2)#
+name <- c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j")#
+series <- c(rep(c("blob", "poop", "doop"), 3), "asdf")#
+a$series(hSeries(x,y,z,name, color, series))#
+#
+# tweak the bubble plot#
+a$chart(zoomType = "xy", type = "bubble")#
+a$plotOptions(bubble = list(dataLabels = list(enabled = T, style = list(textShadow = 'none') ,#
+color = '#aa8959', formatter = "#! function() { return this.point.name; } !#")))#
+#
+a$colors(swi_rpal)#
+a$tooltip(formatter = "#! function() { return this.point.name + ':' +this.x + ', ' + this.y; } !#")#
+a$xAxis(title = list(text = "important indicator", align = "high"), lineColor = list ('#FF0000'))#
+a
+hSeries
+library(swiTheme)
+?hSeries
+?hSerie
+library(swiRcharts)
+?hSeries
+library(swiTheme)#
+a <- rCharts::Highcharts$new()#
+x <- 1:10#
+y <- seq(1, 100, 10)#
+z <- 10:1#
+color <- rep(c("grey", "red"), 2)#
+name <- c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j")#
+series <- c(rep(c("blob", "poop", "doop"), 3), "asdf")#
+a$series(hSeries(x,y,z,name, color, series))#
+#
+# tweak the bubble plot#
+a$chart(zoomType = "xy", type = "bubble")#
+a$plotOptions(bubble = list(dataLabels = list(enabled = T, style = list(textShadow = 'none') ,#
+color = '#aa8959', formatter = "#! function() { return this.point.name; } !#")))#
+#
+a$colors(swi_rpal)#
+a$tooltip(formatter = "#! function() { return this.point.name + ':' +this.x + ', ' + this.y; } !#")#
+a$xAxis(title = list(text = "important indicator", align = "high"), lineColor = list ('#FF0000'))#
+a
+color
+length(x)
+library(swiRcharts)
+library(swiTheme)#
+a <- rCharts::Highcharts$new()#
+x <- 1:10#
+y <- seq(1, 100, 10)#
+z <- 10:1#
+color <- rep(c("grey", "red"), 5)#
+name <- c("a", "b", "c", "d", "e", "f", "g", "h", "i", "j")#
+series <- c(rep(c("blob", "poop", "doop"), 3), "asdf")#
+a$series(hSeries(x,y,z,name, color, series))#
+#
+# tweak the bubble plot#
+a$chart(zoomType = "xy", type = "bubble")#
+a$plotOptions(bubble = list(dataLabels = list(enabled = T, style = list(textShadow = 'none') ,#
+color = '#aa8959', formatter = "#! function() { return this.point.name; } !#")))#
+#
+a$colors(swi_rpal)#
+a$tooltip(formatter = "#! function() { return this.point.name + ':' +this.x + ', ' + this.y; } !#")#
+a$xAxis(title = list(text = "important indicator", align = "high"), lineColor = list ('#FF0000'))#
+a
+library(streamgraph)#
+library(dplyr)#
+ggplot2::movies %>%#
+  select(year, Action, Animation, Comedy, Drama, Documentary, Romance, Short) %>%#
+  tidyr::gather(genre, value, -year) %>%#
+  group_by(year, genre) %>%#
+  tally(wt=value) %>%#
+  streamgraph("genre", "n", "year") %>%#
+  sg_axis_x(20) %>%#
+  sg_colors("PuOr") %>%#
+  sg_legend(show=TRUE, label="Genres: ")
+traceback()
+library(streamgraph)#
+library(dplyr)#
+library(babynames)#
+library(DT)#
+#
+ggplot2::movies %>%#
+  select(year, Action, Animation, Comedy, Drama, Documentary, Romance, Short) %>%#
+  tidyr::gather(genre, value, -year) %>%#
+  group_by(year, genre) %>%#
+  tally(wt=value) %>%#
+  ungroup -> dat#
+#
+streamgraph(dat, "genre", "n", "year", interactive=TRUE) %>%#
+  sg_axis_x(20, "year", "%Y") %>%#
+  sg_colors("PuOr")
+library(streamgraph)#
+#
+# current verison#
+packageVersion("streamgraph")#
+#
+library(dplyr)#
+#
+ggplot2::movies %>%#
+  select(year, Action, Animation, Comedy, Drama, Documentary, Romance, Short) %>%#
+  tidyr::gather(genre, value, -year) %>%#
+  group_by(year, genre) %>%#
+  tally(wt=value) -> dat#
+#
+streamgraph(dat, "genre", "n", "year", interactive=TRUE) %>%#
+  sg_axis_x(20, "year", "%Y") %>%#
+  sg_fill_brewer("PuOr")
+if(require(tm)){#
+	data(SOTU)#
+	corp <- SOTU#
+	corp <- tm_map(corp, removePunctuation)#
+	corp <- tm_map(corp, removePunctuation)#
+	corp <- tm_map(corp, tolower)#
+	corp <- tm_map(corp, removeNumbers)#
+	corp <- tm_map(corp, function(x)removeWords(x,stopwords()))#
+#
+	term.matrix <- TermDocumentMatrix(corp)#
+	term.matrix <- as.matrix(term.matrix)#
+	colnames(term.matrix) <- c("SOTU 2010","SOTU 2011")#
+	comparison.cloud(term.matrix,max.words=40,random.order=FALSE)#
+	commonality.cloud(term.matrix,max.words=40,random.order=FALSE)#
+}
+data(SOTU)#
+	corp <- SOTU#
+	corp <- tm_map(corp, removePunctuation)#
+	corp <- tm_map(corp, removePunctuation)#
+	corp <- tm_map(corp, tolower)#
+	corp <- tm_map(corp, removeNumbers)#
+	corp <- tm_map(corp, function(x)removeWords(x,stopwords()))#
+#
+	term.matrix <- TermDocumentMatrix(corp)#
+	term.matrix <- as.matrix(term.matrix)#
+	colnames(term.matrix) <- c("SOTU 2010","SOTU 2011")#
+	comparison.cloud(term.matrix,max.words=40,random.order=FALSE)#
+	commonality.cloud(term.matrix,max.words=40,random.order=FALSE)
+library(tm)
+data(SOTU)#
+	corp <- SOTU#
+	corp <- tm_map(corp, removePunctuation)#
+	corp <- tm_map(corp, removePunctuation)#
+	corp <- tm_map(corp, tolower)#
+	corp <- tm_map(corp, removeNumbers)#
+	corp <- tm_map(corp, function(x)removeWords(x,stopwords()))#
+#
+	term.matrix <- TermDocumentMatrix(corp)#
+	term.matrix <- as.matrix(term.matrix)#
+	colnames(term.matrix) <- c("SOTU 2010","SOTU 2011")#
+	comparison.cloud(term.matrix,max.words=40,random.order=FALSE)#
+	commonality.cloud(term.matrix,max.words=40,random.order=FALSE)
+library(wordcloud)
+data(SOTU)#
+	corp <- SOTU#
+	corp <- tm_map(corp, removePunctuation)#
+	corp <- tm_map(corp, removePunctuation)#
+	corp <- tm_map(corp, tolower)#
+	corp <- tm_map(corp, removeNumbers)#
+	corp <- tm_map(corp, function(x)removeWords(x,stopwords()))#
+#
+	term.matrix <- TermDocumentMatrix(corp)#
+	term.matrix <- as.matrix(term.matrix)#
+	colnames(term.matrix) <- c("SOTU 2010","SOTU 2011")#
+	comparison.cloud(term.matrix,max.words=40,random.order=FALSE)#
+	commonality.cloud(term.matrix,max.words=40,random.order=FALSE)
+data(SOTU)    corp <- SOTU    corp <- tm_map(corp, removePunctuation)    corp <- tm_map(corp, content_transformer(tolower))    corp <- tm_map(corp, removeNumbers)
+corp <- tm_map(corp, function(x)removeWords(x,stopwords()))  term.matrix <- TermDocumentMatrix(corp)  term.matrix <- as.matrix(term.matrix)  colnames(term.matrix) <- c("SOTU 2010","SOTU 2011")  comparison.cloud(term.matrix,max.words=40,random.order=FALSE)  commonality.cloud(term.matrix,max.words=40,random.order=FALSE)
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+library("swiTheme")#
+library("swiRcharts")#
+#
+#############################################################################################
+###		Get data and translations#
+#############################################################################################
+#
+data <- read.csv("bourseTertiaires.csv", check.names = FALSE, stringsAsFactors = F)
+data
+str(data)
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+library("swiTheme")#
+library("swiRcharts")#
+source("~/swissinfo/_helpers/helpers.R")#
+#
+#############################################################################################
+###		Get data and translations#
+#############################################################################################
+#
+data <- read.csv("bourseTertiaires.csv", check.names = FALSE, stringsAsFactors = F)
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+library("swiTheme")#
+library("swiRcharts")#
+source("~/swissinfo/_helpers/helpers.R")#
+#
+#############################################################################################
+###		Get data and translations#
+#############################################################################################
+#
+data <- read.csv("bourseTertiaires.csv", check.names = FALSE, stringsAsFactors = F)
+data
+canton_names
+canton_namesStrict(data[,1])
+data[,1]
+data[-1,1]
+canton_namesStrict(data[-1,1])
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+c('CH', canton_namesStrict(data[-1,1]))
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+cbind(iso2 = c('CH', canton_namesStrict(data[-1,1])), data)
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+colnames(data)
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+library("swiTheme")#
+library("swiRcharts")#
+source("~/swissinfo/_helpers/helpers.R")#
+#
+#############################################################################################
+###		Get data and translations#
+#############################################################################################
+#
+data <- read.csv("bourseTertiaires.csv", check.names = FALSE, stringsAsFactors = F)#
+#
+# get the 2 letters abbreviations #
+data <- cbind(iso2 = c('CH', canton_namesStrict(data[-1,1])), data)
+data
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+library("swiTheme")#
+library("swiRcharts")#
+source("~/swissinfo/_helpers/helpers.R")#
+#
+#############################################################################################
+###		Get data and translations#
+#############################################################################################
+#
+data <- read.csv("bourseTertiaires.csv", check.names = FALSE, stringsAsFactors = F)#
+#
+# get the 2 letters abbreviations #
+data <- cbind(iso2 = c('CH', canton_namesStrict(data[-1,1])), data) #
+colnames(data)[2] <- 'canton'
+data
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+write.csv(data, "bourseTertiaires_01.csv", row.names = F)
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+library("swiTheme")#
+library("swiRcharts")#
+source("~/swissinfo/_helpers/helpers.R")#
+#
+#############################################################################################
+###		Get data and translations#
+#############################################################################################
+#
+data <- read.csv("bourseTertiaires.csv", check.names = FALSE, stringsAsFactors = F)#
+#
+# cbind the 2 letters abbreviations #
+data <- cbind(iso2 = c('CH', canton_namesStrict(data[-1,1])), data) #
+colnames(data)[2] <- 'canton'#
+write.csv(data, "bourseTertiaires_01.csv", row.names = F)#
+#
+data <- read.csv("bourseTertiaires_01.csv", check.names = FALSE, stringsAsFactors = F)
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+library("swiTheme")#
+library("swiRcharts")#
+source("~/swissinfo/_helpers/helpers.R")#
+#
+#############################################################################################
+###		Get data and translations#
+#############################################################################################
+#
+data <- read.csv("bourseTertiaires.csv", check.names = FALSE, stringsAsFactors = F)#
+#
+# cbind the 2 letters abbreviations #
+data <- cbind(iso2 = c('CH', canton_namesStrict(data[-1,1])), data) #
+colnames(data)[2] <- 'canton'#
+write.csv(data, "bourseTertiaires_01.csv", row.names = F)#
+#
+data <- read.csv("bourseTertiaires_01.csv", check.names = FALSE, stringsAsFactors = F)#
+#
+## load translation#
+#
+trad <- read.csv("01_trad.csv", row.names = 1, stringsAsFactors = F)
+trad
+setwd('/Users/nguyendu/Google Drive/swissinfo/2015_03_30_bourses')
+library("swiTheme")#
+library("swiRcharts")#
+source("~/swissinfo/_helpers/helpers.R")#
+#
+#############################################################################################
+###		Get data and translations#
+#############################################################################################
+#
+data <- read.csv("bourseTertiaires.csv", check.names = FALSE, stringsAsFactors = F)#
+#
+# cbind the 2 letters abbreviations #
+data <- cbind(iso2 = c('CH', canton_namesStrict(data[-1,1])), data) #
+colnames(data)[2] <- 'canton'#
+write.csv(data, "bourseTertiaires_01.csv", row.names = F)#
+#
+data <- read.csv("bourseTertiaires_01.csv", check.names = FALSE, stringsAsFactors = F)#
+#
+## load translation#
+#
+trad <- read.csv("01_trad.csv", row.names = 1, stringsAsFactors = F)
+trad
